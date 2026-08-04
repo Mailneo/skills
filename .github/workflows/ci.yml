@@ -1,0 +1,63 @@
+# Structural gate for the skills: every skill has parseable frontmatter with
+# name+description, every relative link inside a skill resolves, the wrapper
+# script passes shellcheck, and the marketplace manifest is valid JSON.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate marketplace manifest
+        run: python3 -c "import json; json.load(open('.claude-plugin/marketplace.json'))"
+
+      - name: Validate skill frontmatter
+        run: |
+          python3 - <<'EOF'
+          import pathlib, re, sys
+          failures = []
+          skills = sorted(pathlib.Path('skills').glob('*/SKILL.md'))
+          if len(skills) < 5:
+              failures.append(f'expected 5 skills, found {len(skills)}')
+          for p in skills:
+              text = p.read_text()
+              m = re.match(r'^---\n(.*?)\n---\n', text, re.S)
+              if not m:
+                  failures.append(f'{p}: no frontmatter block'); continue
+              fm = m.group(1)
+              name = re.search(r'^name:\s*(\S+)', fm, re.M)
+              desc = re.search(r'^description:\s*(.+)', fm, re.M)
+              if not name: failures.append(f'{p}: missing name')
+              elif name.group(1) != p.parent.name:
+                  failures.append(f'{p}: name {name.group(1)!r} != dir {p.parent.name!r}')
+              if not desc or len(desc.group(1).strip()) < 40:
+                  failures.append(f'{p}: description missing or too short to route on')
+          if failures:
+              print('\n'.join(failures)); sys.exit(1)
+          print(f'{len(skills)} skills valid')
+          EOF
+
+      - name: Validate internal links
+        run: |
+          python3 - <<'EOF'
+          import pathlib, re, sys
+          failures = []
+          for md in pathlib.Path('skills').rglob('*.md'):
+              for target in re.findall(r'\]\((?!https?://|#|mailto:)([^)]+?)(?:#[^)]*)?\)', md.read_text()):
+                  if not (md.parent / target).exists():
+                      failures.append(f'{md}: broken link -> {target}')
+          if failures:
+              print('\n'.join(failures)); sys.exit(1)
+          print('links ok')
+          EOF
+
+      - name: Shellcheck scripts
+        run: |
+          sudo apt-get install -y shellcheck > /dev/null
+          find skills -name '*.sh' -exec shellcheck {} +

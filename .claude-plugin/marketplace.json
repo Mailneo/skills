@@ -1,0 +1,26 @@
+{
+  "name": "mailneo",
+  "owner": {
+    "name": "Mailneo",
+    "url": "https://github.com/Mailneo"
+  },
+  "plugins": [
+    {
+      "name": "email-marketing",
+      "source": "./",
+      "description": "Run your email marketing from the terminal: five skills covering copywriting, deliverability, lifecycle strategy, compliance, and hands-on operation of the Mailneo API with just an API key.",
+      "author": { "name": "Mailneo", "email": "hi@mailneo.co" },
+      "homepage": "https://github.com/Mailneo/skills",
+      "license": "MIT",
+      "keywords": [
+        "email",
+        "email-marketing",
+        "newsletters",
+        "deliverability",
+        "copywriting",
+        "mailneo"
+      ],
+      "category": "productivity"
+    }
+  ]
+}
