@@ -63,10 +63,14 @@ needs.
 
 ## Rules for writes
 
-- **Segments:** `update_segment` replaces the conditions wholesale. Read the
-  current definition with `get_segment` first, then send the complete new
-  condition set. Open and click *counts* are not accepted as conditions; use
-  `lastOpenedAt` / `lastClickedAt` dates instead.
+- **Segments:** a segment's stored conditions cannot be read back —
+  `get_segment` returns its name and match count only. To rename, call
+  `update_segment` without `conditions` and the filter is left alone. To
+  change the filter, send the complete new condition set (it replaces the old
+  one wholesale); if you don't know the full intended filter, ask the user
+  rather than guessing. Open and click *counts* are not accepted as
+  conditions; use `lastOpenedAt` / `lastClickedAt` dates instead, and combine
+  `after` and `before` in an AND group for a date range.
 - **Lists:** `add_subscribers_to_list` never re-adds someone who unsubscribed
   from that list. Report the `unsubscribed` group in the result rather than
   trying to force them in — their opt-out stands.
