@@ -1,6 +1,6 @@
 ---
 name: mailneo
-description: "Use when the user wants to manage email marketing through Mailneo: subscribers, lists, segments, contacts, campaigns, newsletters, templates, suppressions, analytics, webhooks, or sending. Requires MAILNEO_API_KEY. Do NOT use for general email-writing advice without API operations."
+description: "Use when the user wants to manage email marketing through Mailneo: subscribers, lists, segments, contacts, campaigns, newsletters, templates, suppressions, analytics, webhooks, or sending. Works through the Mailneo connector (MCP tools) or a MAILNEO_API_KEY. Do NOT use for general email-writing advice without API operations."
 ---
 
 # Operating the Mailneo API
@@ -29,9 +29,26 @@ human has not seen. The token expires in 15 minutes and dies on any audience
 or content drift — a `409 send_plan_changed` means re-preview and re-ask,
 because the numbers the human approved are no longer the numbers.
 
-## Setup check
+## Two ways in: the connector and the API key
 
-Before the first real operation:
+This plugin bundles the **Mailneo connector** (MCP server at
+`https://api.mailneo.co/mcp`). When its tools are available — names like
+`get_workspace_info`, `find_subscribers`, `get_segment`,
+`create_campaign_draft` — prefer them for reads, audience work, drafts,
+templates and analytics. The user signs in once through OAuth and chooses the
+scopes; there is no key to handle. Start with `get_workspace_info` to learn
+the team, scopes and plan.
+
+The connector **cannot send** — by design, no MCP tool reaches a send route.
+For anything it does not cover (sending, deletes, imports, webhooks beyond
+creation), fall back to the API-key path below, and only if the user has set
+`MAILNEO_API_KEY`. If neither is available, tell the user to connect Mailneo
+(`/mcp` in Claude Code, or Settings -> Connectors in Claude) or to create an
+API key; never ask them to paste a credential into the conversation.
+
+## Setup check (API-key path)
+
+Before the first real operation through the API:
 
 1. Confirm the key exists: `MAILNEO_API_KEY` must be set in the environment.
    If not, stop and tell the user to create one in the Mailneo dashboard under

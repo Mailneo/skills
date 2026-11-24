@@ -4,12 +4,18 @@
     "name": "Mailneo",
     "url": "https://github.com/Mailneo"
   },
+  "metadata": {
+    "description": "Mailneo's official Claude Code plugins for email marketing."
+  },
   "plugins": [
     {
       "name": "email-marketing",
       "source": "./",
-      "description": "Run your email marketing from the terminal: five skills covering copywriting, deliverability, lifecycle strategy, compliance, and hands-on operation of the Mailneo API with just an API key.",
-      "author": { "name": "Mailneo", "email": "hi@mailneo.co" },
+      "description": "Run your email marketing with Claude: five skills covering copywriting, deliverability, lifecycle strategy and compliance, plus the Mailneo connector for live subscribers, lists, segments, campaign drafts, templates and analytics.",
+      "author": {
+        "name": "Mailneo",
+        "email": "hi@mailneo.co"
+      },
       "homepage": "https://github.com/Mailneo/skills",
       "license": "MIT",
       "keywords": [
@@ -20,7 +26,8 @@
         "copywriting",
         "mailneo"
       ],
-      "category": "productivity"
+      "category": "productivity",
+      "version": "0.2.0"
     }
   ]
 }

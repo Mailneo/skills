@@ -50,6 +50,14 @@ git clone https://github.com/Mailneo/skills && cp -r skills/skills/* ~/.codex/sk
 
 ## Connect your Mailneo account
 
+**Option A: the Mailneo connector (recommended in Claude Code).** The plugin bundles
+Mailneo's MCP server (`https://api.mailneo.co/mcp`). After installing, run `/mcp`, pick
+**mailneo** and sign in. You choose which scopes to grant on the consent screen, and there
+is no key to store. The connector reads your audience and analytics and writes drafts,
+lists, segments and templates. It **cannot send email**; no tool reaches a send route.
+
+**Option B: an API key** (any agent, and the only way to send):
+
 1. In Mailneo: **Settings → API Keys → Create key**. Grant the scopes you want the agent
    to have — reads only is a fine way to start; add `*:write` scopes when you're ready,
    and the `*:send` scopes only if you want the agent to be able to *propose* sends.
@@ -59,8 +67,8 @@ git clone https://github.com/Mailneo/skills && cp -r skills/skills/* ~/.codex/sk
 export MAILNEO_API_KEY=mk_live_...
 ```
 
-That's the whole setup. The `mailneo` skill checks your key and adapts to the scopes it
-finds.
+The `mailneo` skill uses the connector when it is connected, falls back to your key for
+anything the connector does not cover, and adapts to the scopes it finds.
 
 ## Safety, by design
 
@@ -78,6 +86,15 @@ cannot silently email your list.
 - *"Which of my segments has the highest open rate? Show the numbers."*
 - *"Import these 200 contacts, put them on a new list called Beta Users, and set up a welcome email — draft only."*
 - *"Is it legal to cold-email German prospects for my B2B tool? What would a compliant version look like?"*
+
+## Privacy and support
+
+- Privacy policy: https://www.mailneo.co/privacy
+- Data processing: https://www.mailneo.co/dpa
+- Connector docs: https://www.mailneo.co/documentation/resources/mcp
+- Support: hi@mailneo.co
+
+The plugin sends data only to `api.mailneo.co`, the Mailneo API and connector.
 
 ## License
 

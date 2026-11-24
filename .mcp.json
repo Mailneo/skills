@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "mailneo": {
+      "type": "http",
+      "url": "https://api.mailneo.co/mcp"
+    }
+  }
+}

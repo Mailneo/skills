@@ -1,0 +1,23 @@
+{
+  "name": "email-marketing",
+  "version": "0.2.0",
+  "description": "Run your email marketing with Claude: five skills covering copywriting, deliverability, lifecycle strategy and compliance, plus the Mailneo connector for live subscribers, lists, segments, campaign drafts, templates and analytics.",
+  "author": {
+    "name": "Mailneo",
+    "email": "hi@mailneo.co",
+    "url": "https://www.mailneo.co"
+  },
+  "homepage": "https://www.mailneo.co/documentation/resources/mcp",
+  "repository": "https://github.com/Mailneo/skills",
+  "license": "MIT",
+  "keywords": [
+    "email",
+    "email-marketing",
+    "newsletters",
+    "deliverability",
+    "copywriting",
+    "mailneo"
+  ],
+  "icon": ".claude-plugin/icon.png",
+  "privacyPolicyUrl": "https://www.mailneo.co/privacy"
+}
