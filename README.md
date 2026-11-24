@@ -48,6 +48,11 @@ git clone https://github.com/Mailneo/skills && cp -r skills/skills/* ~/.codex/sk
 
 **Claude Code (manual):** same, into `~/.claude/skills/` (or `.claude/skills/` in a project).
 
+**Claude Directory edition:** [`claude-directory/`](claude-directory/) is a connector-only
+build of this plugin, the one listed in the Claude Directory. It has the same four knowledge
+skills and a `mailneo` skill that works only through the connector, with no script and no
+API key.
+
 ## Connect your Mailneo account
 
 **Option A: the Mailneo connector (recommended in Claude Code).** The plugin bundles

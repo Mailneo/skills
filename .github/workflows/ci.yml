@@ -1,6 +1,7 @@
 # Structural gate for the skills: every skill has parseable frontmatter with
 # name+description, every relative link inside a skill resolves, the wrapper
-# script passes shellcheck, and the marketplace manifest is valid JSON.
+# script passes shellcheck, the marketplace manifest is valid JSON, and the
+# connector-only claude-directory/ plugin stays in sync and script-free.
 name: CI
 
 on:
@@ -48,7 +49,7 @@ jobs:
           python3 - <<'EOF'
           import pathlib, re, sys
           failures = []
-          for md in pathlib.Path('skills').rglob('*.md'):
+          for md in [*pathlib.Path('skills').rglob('*.md'), *pathlib.Path('claude-directory/skills').rglob('*.md')]:
               for target in re.findall(r'\]\((?!https?://|#|mailto:)([^)]+?)(?:#[^)]*)?\)', md.read_text()):
                   if not (md.parent / target).exists():
                       failures.append(f'{md}: broken link -> {target}')
@@ -60,4 +61,16 @@ jobs:
       - name: Shellcheck scripts
         run: |
           sudo apt-get install -y shellcheck > /dev/null
-          find skills -name '*.sh' -exec shellcheck {} +
+          find skills scripts -name '*.sh' -exec shellcheck {} +
+
+      - name: Directory plugin copies are in sync
+        run: |
+          scripts/sync-directory-plugin.sh
+          git diff --exit-code -- claude-directory || {
+            echo 'claude-directory/ drifted from skills/: run scripts/sync-directory-plugin.sh and commit'; exit 1; }
+          test -z "$(git status --porcelain -- claude-directory)"
+
+      - name: Directory plugin ships no scripts or local credentials
+        run: |
+          ! find claude-directory -type f ! -name '*.md' ! -name '*.json' ! -name 'icon.png' | grep .
+          ! grep -rnE 'MAILNEO_API_KEY|x-api-key' claude-directory
