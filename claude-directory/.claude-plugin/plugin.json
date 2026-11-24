@@ -19,5 +19,8 @@
     "mailneo"
   ],
   "icon": ".claude-plugin/icon.png",
-  "privacyPolicyUrl": "https://www.mailneo.co/privacy"
+  "privacyPolicyUrl": "https://www.mailneo.co/privacy",
+  "supportUrl": "https://www.mailneo.co/contact",
+  "termsOfServiceUrl": "https://www.mailneo.co/terms",
+  "documentationUrl": "https://www.mailneo.co/documentation/resources/mcp"
 }
